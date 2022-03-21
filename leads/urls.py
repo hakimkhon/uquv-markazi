@@ -5,4 +5,5 @@ app_name = "leads"
 
 urlpatterns = [
     path('', home),
+    path('leads/', lead_lists),
 ]

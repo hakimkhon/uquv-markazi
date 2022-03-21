@@ -1,6 +1,7 @@
 {% extends 'main.html' %}
 {% block title %}Home Page{% endblock %}
 {% block content%}
+{% load static %}
 <section class="text-gray-600 body-font">
     <div class="container px-5 py-5 mx-auto flex flex-wrap">
       <div class="flex w-full mb-20 flex-wrap">
@@ -8,37 +9,32 @@
         <h5 class="lg:pl-6 lg:w-2/3 mx-auto leading-relaxed text-base">
           Kompyuter savodxonligini mukammal darajada o’rganishni istaganlar uchun o’zimizni “Tech Data Soft” IT kompaniyamizga taklif qilamiz
           <br> ☎️ +99890690-13-35   ☎️ +99894890-13-35   
-          <!-- https://source.unsplash.com/500x300/  -->
+          <!-- https://source.unsplash.com/500x300/  https://source.unsplash.com/500x330/?programming -->
         </h5>
-        <h6>
-          assalomu alaykum
-        </h6>
-        
+
       </div>
-      <!-- <div class="flex flex-wrap md:-m-2 -m-1">
-        <div class="flex flex-wrap w-1/2">
-          <div class="md:p-2 p-1 w-1/2">
-            <img alt="gallery" class="w-full object-cover h-full object-center block" src="">
-          </div>
-          <div class="md:p-2 p-1 w-1/2">
-            <img alt="gallery" class="w-full object-cover h-full object-center block" src="">
-          </div>
-          <div class="md:p-2 p-1 w-full">
-            <img alt="gallery" class="w-full h-full object-cover object-center block" src="">
-          </div>
+      <div class="flex flex-wrap w-1/2">
+        <div class="md:p-2 p-1 w-1/2">
+          <img alt="gallery" class="w-full object-cover h-full object-center block" src="{% static 'images/img1.jpg' %}">
         </div>
-        <div class="flex flex-wrap w-1/2">
-          <div class="md:p-2 p-1 w-full">
-            <img alt="gallery" class="w-full h-full object-cover object-center block" src="">
-          </div>
-          <div class="md:p-2 p-1 w-1/2">
-            <img alt="gallery" class="w-full object-cover h-full object-center block" src="">
-          </div>
-          <div class="md:p-2 p-1 w-1/2">
-            <img alt="gallery" class="w-full object-cover h-full object-center block" src="">
-          </div>
+        <div class="md:p-2 p-1 w-1/2">
+          <img alt="gallery" class="w-full object-cover h-full object-center block" src="{% static 'images/img2.jpg' %}">
         </div>
-      </div> -->
+        <div class="md:p-2 p-1 w-full">
+          <img alt="gallery" class="w-full h-full object-cover object-center block" src="{% static 'images/img3.jpg' %}">
+        </div>
+      </div>
+      <div class="flex flex-wrap w-1/2">
+        <div class="md:p-2 p-1 w-full">
+          <img alt="gallery" class="w-full h-full object-cover object-center block" src="{% static 'images/img4.jpg' %}">
+        </div>
+        <div class="md:p-2 p-1 w-1/2">
+          <img alt="gallery" class="w-full object-cover h-full object-center block" src="{% static 'images/img5.jpg' %}">
+        </div>
+        <div class="md:p-2 p-1 w-1/2">
+          <img alt="gallery" class="w-full object-cover h-full object-center block" src="{% static 'images/img6.jpg' %}">
+        </div>
+      </div>
     </div>
   </section>
 {% endblock %}
