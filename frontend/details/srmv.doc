@@ -1,0 +1,274 @@
+Vertual envayer (venv) 
+1-	Avvalo virtual muhitni yaratib olamiz buning uchun telminalda quyidagi kodlarni yozamiz pip install virtualenv keying navbatta virtual muhitga nom beramiz va python -m venv env yoki virtualenv env  (env bu ihtiyoriy nom odatda venv yoki env bo’ladi )kodlarni yozamiz va uni aktivatsiya qilamiz  .\venv\Scripts\activate    (deactivate)
+2-	Djangoni kerakli versiyasini o’rtanib olamiz  pip install django==3.1.4   nimani o’rtansak undankeyin  qanday kutubxonalar o’rnatilganlik haqida malumot beruvchi fileni ishga tushiramiz buning uchun pip freeze > requirements.txt bu fayldagi urnatilganlar ro’yxatini qayta o’rnatish uchun shu kodlardan foydalanamiz  pip install -r requirements.txt
+3-	Proekt yaratamiz buning uchun django-admin startproject core . (core project nomi bu ixtiyoriy)   
+4-	Biz malumotlar bazasi bilan ishlaymiz shuning uchun kerakli extensions o’rnatib olamiz yani sqlite ni so’ngra dasturni ishga(python manage.py runserver) tushiramiz keyin aniqlanmagan filelarni malumotlar bazasiga yuklaymiz buning uchun python manage.py migrate keyin admin yaratamiz buning uchun python manage.py createsuperuser kodidan foydalanamiz
+5-	Endi dasturimiz uchun application yaramiz buning uchun python manage.py startapp leads (leads application nomi u ixtiyoriy)keyin va har bir yaratilgan application nomini core papkamizda joylashgan  setting.py  filega kiritib quyamiz yani  INSTALLED_APPS = [….., ‘leads’,] kiritib quyamiz.
+Djangoda modellar
+1-	Djangoda model yaratish uchun leads da joylashgan model.py  filega uzgartirish kiritamiz yani kerakli modelni elementlarini yozib chiqamiz va shu tariqa boshqa kerakli modellarni yaratib olamiz 
+#model.py
+class Lead(models.Model):
+    ism = models.CharField(max_length=15)
+    famila = models.CharField(max_length=15)
+    yosh = models.IntegerField(default=0)
+
+    def __str__(self):
+        return str(self.ism)
+2-	Keyingi ishimiz yaratilgan modellarni(boshqa modellarni ham) admin.py  filega bog’laymiz 
+#admin.py
+from django.contrib import admin
+from .models import Lead
+admin.site.register(Lead)
+3-	Keyin esa elementlarni malumotlar bazasiga ro’yhatdan o’tkazamiz buning uchun python manage.py makemigrations so’ng python manage.py migrate va proektni ishga tushiramiz 
+4-	Proekt ishga tushgandan keyin undan foydalanish uchun http://127.0.0.1:8000/admin/ havolasiga o’tib login va parolni kiritamiz 
+5-	Proekt ishga tushirganimizda(brouserda ko’rinadi) Group va Users nomli applar bor  ulardan Usersni mavhum klassga o’zgartiramiz buning uchun model.py  filega uzgartirish kiritamiz  
+from django.contrib.auth.models import AbstractUser
+class User(AbstractUser):
+    pass
+6-	Bizda auth.User.groups (fields.E304)  xatolik kelib chiqadi uni hal qilish uchun core papkamizda joylashgan  setting.py  o’zgartirish kiritamiz yani  AUTH_USER_MODEL = 'leadss.User' kiritib quyamiz va ishga tushiramiz yana ValueError xatoligi chiqadi buni hal qilish uchun esa migrations papkamizda joylashgan  0001_...py  filelarini o’chiramiz va yana OperationalError  xatoligi chiqadi bu malumotlar bazisi xatoligi uni malumotlar bazasini(db.sqlite3) o’chiramiz va makemigrations migrate runser 
+7-	Keying navbatda o’quvmarkazimizga agents yaratamiz va uni studens bilan bog’laymiz buning uchun quyidagi kodlardan foydalanamiz 
+#models.py
+class Leads():
+	agent = models.ForeignKey("Agent", on_delete=models.CASCADE)
+class Agent(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    def __str__(self):
+        return str(self.user)
+8-	modelga o’zgartirish kiritganimiz uchun makemigrations va migrate buyrug’larini kitiramiz Bizda TypeError: U Fielsd ‘id’  xatolik kelib chiqadi buni hal qilish uchun esa migrations papkamizda joylashgan  0001_...py va db.sqlite3 filelarini o’chiramiz va makemigrations migrate runser 
+HttpResponse, URL
+1-	Urllar bilan ishlash uchun odatda views.py filelaridan foydalanamiz yani ko’rinish faylari. Avvalo django kutubxonasidagi http modulini httpresponse funksiyasini  import qilib olamiz. Va funksiya yaratamiz bu funksiya yordamida urllarga so’rov yubaramiz buning uchun quyidagi kodlardan foydalanamiz
+# views.py
+from django.http import HttpResponse
+def home(request):
+    return HttpResponse("Hammaga salom")
+# urls.py
+from students.views import home
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', home)
+]
+2-	Yuqoridagi kodlar yordamida url so’rovlarimiz yuborilganini tekshirib oldik endi html fayllar bilan ishlaymiz va render funksiyasidan foydalanamiz so’ngra  app imiz ichiga templates nomli papka ochamiz uning ichiga html fayllarni joylaymiz va uni home funksiyamizga ulaymiz buning uchun return render(request, "main/index.html") agar biz css img yoki js filelaridan foydalansak unda bizga static nomli papka kerak va uni ichida shu filelarni saqlab boramiz undan foydalanish uchun esa setting.py  filega uzgartirish kiritamiz STATIC_URL = '/static/'
+STATICFILES_DIRS = [    BASE_DIR / "static" ] html fileda esa {% load static %} kodi yordam beradi
+3-	Agar biz templates nomli papkamizni app tashqarisida joylasak proekt ishlashi uchun ayrim o’zgarishlar bo’ladi yani setting.py  filega kiritib quyamiz yani  'DIRS': [ BASE_DIR / 'templates' ], kiritib quyamiz
+4-	Endigi ishimiz malumotlar bazasidagi malumotlarni chop etish buning uchun context dan foydalanamiz
+def home(request):
+    context = {
+        "ismi":         "Hakimkhon",
+        "familiyasi":   "Sharifkhonov",
+        "yoshi":        "28"    
+    }
+    return render(request, "main/index.html", context)
+5-	Html faylda esa
+<body>
+    <h1>Assalomu alaykum Dasturchilar</h1>
+    <h4>ismi: {{ ismi }}</h4>
+    <h4>familiyasi: {{ familiyasi }}</h4>
+    <h4>yoshi: {{ yoshi }}</h4>    
+</body>
+6-	Yuqorida biz soxta malumotlardan foydalandik endi database dan foydalanamiz 
+from . import models
+def home(request):
+    lead = models.Lead.objects.all
+    context = {
+        "leads": lead
+    }
+    return render(request, "main/index.html", context)
+#html
+<h1>Assalomu alaykum Dasturchilar</h1>
+<ul>
+    {% for lead in leads %}
+        <li>{{ lead }}</li>
+    {% endfor %}
+</ul>
+URLlar bilan ishlash
+1-	Urllar bilan yaxshiroq ishlash uchun avvalo app da yangi urls.py faylini yaratib olamiz. Uning ichiga Proektimizdagi urls.py faylidan bazi kodlarni nusxalab olamiz 
+# urls.py in project
+from django.urls import path, include
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include(leads.urls', namespace="leads")),
+]
+# ulrs.py in application
+from .views import *
+app_name = "leads"
+urlpatterns = [
+    path('', home),
+]
+2-	Endigi navbatta idler bilan ishlaymiz
+def student_details(request, pk):
+    print(pk)
+    pktalaba = models.Student.objects.get(id = pk)
+    print(pktalaba)
+    return render(request, "student_details.html")
+3-	Urlda ham o’zgarish
+urlpatterns = [
+    path('', student_lists),
+    path('<pk>/', student_details)
+]
+4-	Mavzud bo’lmagan idga murojaat qilganda notfound chiqishini taminlash kerak galdagi vazifamiz. Buning 
+from django.shortcuts import get_object_or_404
+pktalaba = get_object_or_404(models.Student, id = pk   keyingi ishimiz html fayllarni bir biriga bog’lash
+5-	Buning uchun html faylga quyidagi kodni yozamiz href="/leads/{{lead.pk}} va " va ismi: {{lead.ism}} 
+Formalar bilan ishlash
+1-	Endi mizojlarni admin paneldan emas htmlni o’zidan yaratishni o’rganamiz. Buning uchun  app da  forms.py faylini yaratib olamiz. Uning ichiga quyidagilarni yozamiz
+# forms.py
+from django import forms
+class StudentForm(forms.Form):
+    ism = forms.CharField(max_length=15)
+    famila = forms.CharField(max_length=15)
+    yosh = forms.IntegerField(min_value=0)
+# html
+<form action="" method="post">
+    {% csrf_token %}
+    {{forms.as_p}}
+    <button type="submit">Jo'natish</button>
+</form>
+2-	Biz yangi yaratgan mijozni malumotlar bazasiga kiritishimiz kerak 
+def student_create(request):
+    print(request.POST)
+    form = StudentForm()
+    if request.method == "POST":
+        form = StudentForm(request.POST)
+        if form.is_valid():
+            print("Malumotlar")
+            print(form.cleaned_data)
+            ism = form.cleaned_data['ism']
+            famila = form.cleaned_data['famila']
+            yosh = form.cleaned_data['yosh']
+            teacher = models.Teacher.objects.first()
+            models.Student.objects.create(
+                ism = ism, famila = famila, yosh = yosh,teacher = teacher,
+            )
+            print("Muvofiqiyat")
+    context = { forms": form }
+    return render(request, "student_create.html", context)
+3-	Keying ishimiz tugmani bosib dastur bajarilgandan keyin asosiy saxifaga otishni tashkillaymiz buning uchun return redirect("/leads") kodi va from django.shortcuts import redirect kutubxonasini chaqiramiz
+CRUD elementlari(saqlash, o’zgartirish va o’chirish)
+1-	Yuqorida ko’rdin yangi student yaratsak o’zi o’qutuvchi tanlab olmozda shu mauammoni hal qilamiz  
+class StudentModelForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = (
+            "ism", famila", yosh", teacher"
+        )
+2-	 Yuqoridagi clasni yaratib olamiz hamda yozgan kodlarimizni o’zgartiramiz
+def student_create(request):
+    print(request.POST)
+    form = StudentModelForm()
+    if request.method == "POST":
+        form = StudentModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("/leads")
+    context = {
+        "forms": form
+    }
+    return render(request, "student_create.html", context)
+3-	Endigi ishimiz o’quvchilarni malumotlarini o’zgartiramiz buning uchun
+def student_update(request, pk):
+    talaba = models.Student.objects.get(id = pk)
+    form = StudentForm()
+    if request.method == "POST":
+        form = StudentForm(request.POST)
+        if form.is_valid():
+            ism = form.cleaned_data['ism']
+            famila = form.cleaned_data['famila']
+            yosh = form.cleaned_data['yosh']
+            talaba.ism = ism
+            talaba.famila = famila
+            talaba.yosh = yosh
+            talaba.save()
+            return redirect("/leads")
+    context = {
+        "form": form, "lead": talaba
+    }
+    return render(request, "student_update.html", context)
+4-	Shu ko’rinishni yana ham soddalashtiramiz va bazi kodlarni o’chiramiz
+def student_update(request, pk):
+    talaba = models.Student.objects.get(id = pk)
+    form = StudentModelForm(instance = talaba)
+    if request.method == "POST":
+        form = StudentModelForm(request.POST, instance = talaba)
+        if form.is_valid():
+            form.save()
+            return redirect("/leads")
+    context = {
+        "form": form, "lead": talaba
+    }
+    return render(request, "student_update.html", context)
+5-	Endigi ishimiz studentlarni o’chirish
+def student_delete(request, pk):
+    talaba = models.Student.objects.get(id = pk)
+    talaba.delete()
+    return redirect("/leads")
+
+6-	Hom pageni  yaratib olamiz
+#views.py
+def home(request):
+    return render(request, "home.html")
+#urls.py markaz
+from students.views import home
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', home),
+    path('leads/', include('students.urls', namespace="leads"))
+]
+URLlarni xavfsiz ko’rinish
+1-	Endigi navbatta urllar uchun funksiya emas klasslarfon foydalanamiz va kodimiz ham ixcham ko’rinishga keladi
+urlpatterns = [
+    path('', StudentListView.as_view(), name="student_lists"),
+    path('<int:pk>/', StudentDetailView.as_view(), name="student_details"),
+    path('<int:pk>/update', StudentUpdateView.as_view(), name="student_update"),
+    path('<int:pk>/delete', StudentCDeleteView.as_view(), name="student_delete"),
+    path('student_create/', StudentCreateView.as_view(), name="student_create")]
+  from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
+class HomePage(TemplateView):
+    template_name = ("home.html")
+
+class StudentListView(ListView):
+    template_name = "student/student_lists.html"
+    queryset = models.Student.objects.all()
+    context_object_name = "leads"
+
+class StudentDetailView(DetailView):
+    template_name = "student/student_details.html"
+    queryset = models.Student.objects.all()
+    context_object_name = "lead"
+
+class StudentCreateView(CreateView):
+    template_name = "student/student_create.html"
+    form_class = StudentModelForm
+
+    def get_success_url(self):
+        return reverse('leads:student_lists')
+
+class StudentUpdateView(UpdateView):
+    template_name = "student/student_update.html"
+    form_class = StudentModelForm
+    queryset = models.Student.objects.all()
+
+    def get_success_url(self):
+        return reverse('leads:student_lists')
+
+def student_update(request, pk):
+    talaba = models.Student.objects.get(id = pk)
+    form = StudentModelForm(instance = talaba)
+    if request.method == "POST":
+        form = StudentModelForm(request.POST, instance = talaba)
+        if form.is_valid():
+            form.save()
+            return redirect("/leads")
+    context = {
+        "form": form,
+        "lead": talaba
+    }
+    return render(request, "student/student_update.html", context)
+
+class StudentCDeleteView(DeleteView):
+    template_name = "student/student_delate.html"
+    form_class = StudentModelForm
+    queryset = models.Student.objects.all()
+
+    def get_success_url(self):
+        return reverse('leads:student_lists')
+Login
