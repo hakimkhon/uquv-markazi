@@ -1,11 +1,15 @@
 {% extends 'main.html' %}
-{% block title %}Home Page{% endblock %}
+{% block title %}Lead Lists{% endblock %}
 {% block content%}
+
+<a href="create/">Mijoz yaratish</a>
 
 <ul>
     {% for lead in leads %}
-    <li>{{ lead }}</li>
+    <li><a href="/leads/{{lead.pk}}" >{{ lead }}</a></li>
     {% endfor %}
 </ul>
+
+
 
 {% endblock %}
