@@ -22,25 +22,28 @@ def lead_details(request, pk):
     return render(request, "lead\lead_details.html", context)
 
 def lead_create(request):
-    form = LeadForm()
+    form = LeadModelForm()
     if request.method == "POST":
-        form = LeadForm(request.POST)
+        form = LeadModelForm(request.POST)
         if form.is_valid():
-            ism = form.cleaned_data['ism']
-            famila = form.cleaned_data['famila']
-            yosh = form.cleaned_data['yosh']
-            agent = models.Agent.objects.first()
-            models.Lead.objects.create(
-                ism = ism, 
-                famila = famila, 
-                yosh = yosh,
-                agent = agent,
-            )
+            form.save()
+            # ism = form.cleaned_data['ism']
+            # famila = form.cleaned_data['famila']
+            # yosh = form.cleaned_data['yosh']
+            # agent = models.Agent.objects.first()
+            # models.Lead.objects.create(
+            #     ism = ism, 
+            #     famila = famila, 
+            #     yosh = yosh,
+            #     agent = agent,
+            # )
             return redirect("/leads")
     context = {
         "forms": form
     }
     return render(request, "lead\lead_create.html", context)
+
+
 
 # def student_create(request):
 #     print(request.POST)
