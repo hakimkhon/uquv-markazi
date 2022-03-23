@@ -6,7 +6,7 @@
 
 <ul>
     {% for lead in leads %}
-    <li><a href="/leads/{{lead.pk}}" >{{ lead }}</a></li>
+    <li><a href="/leads/{{lead.pk}}" >{{ lead.ism }} {{ lead.famila }} {{ lead.yosh }}</a></li>
     {% endfor %}
 </ul>
 
