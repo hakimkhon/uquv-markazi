@@ -26,32 +26,18 @@ class LeadCreateView(CreateView):
     def get_success_url(self):
         return reverse('leads:lead_lists')
 
-# def lead_create(request):
-#     form = LeadModelForm()
-#     if request.method == "POST":
-#         form = LeadModelForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect("/leads")
-#     context = {
-#         "forms": form
-#     }
-#     return render(request, "lead\lead_create.html", context)
+class LeadUpdateView(UpdateView):
+    template_name = ("lead\lead_update.html")
+    form_class = LeadModelForm
+    queryset = models.Lead.objects.all()
 
-def lead_update(request, pk):
-    lead = models.Lead.objects.get(id = pk)
-    form = LeadModelForm(instance=lead)
-    if request.method == "POST":
-        form = LeadModelForm(request.POST, instance=lead)
-        if form.is_valid():
-            form.save()
-            return redirect("/leads")
-    context = {
-        "form": form, "lead": lead
-    }
-    return render(request, "lead\lead_update.html", context)
+    def get_success_url(self):
+        return reverse('leads:lead_lists')
 
-def lead_delete(request, pk):
-    lead = models.Lead.objects.get(id = pk)
-    lead.delete()
-    return redirect("/leads")
+class LeadDeleteView(DeleteView):
+    template_name = ("lead\lead_delete.html")
+    form_class = LeadModelForm
+    queryset = models.Lead.objects.all()
+
+    def get_success_url(self):
+        return reverse('leads:lead_lists')
