@@ -15,14 +15,14 @@
             <div class="p-2 md:w-1/2">
                 <div class="flex rounded-lg h-full bg-gray-100 p-8 flex-col">
                     <div class="flex items-center mb-3">
-                        <!-- <div
+                        <div
                             class="w-12 h-12 mr-3 inline-flex items-center justify-center rounded-full bg-indigo-500 text-white flex-shrink-0">
                             <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                 stroke-width="2" class="w-8 h-8" viewBox="0 0 24 24">
                                 <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
                                 <circle cx="12" cy="7" r="4"></circle>
                             </svg>
-                        </div> -->
+                        </div>
                         <a href="{% url 'leads:lead_details' lead.pk %}">
                             <h2 class="text-gray-900 text-lg title-font font-medium">{{ lead.ism }} {{ lead.famila }}
                             </h2>
@@ -33,10 +33,10 @@
                             vegan taxidermy. Gastropub indxgo juice poutine.</p>
                         <h4 class="text-gray-900 text-lg title-font font-medium">Yoshi: {{ lead.yosh }}</h4>
                         <a href="{% url 'leads:lead_details' lead.pk %}" class="mt-3 text-indigo-500 inline-flex items-center">Ko'proq 
-                            <!-- <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                 stroke-width="2" class="w-4 h-4 ml-2" viewBox="0 0 24 24">
                                 <path d="M5 12h14M12 5l7 7-7 7"></path>
-                            </svg> -->
+                            </svg>
                         </a>
                     </div>
                 </div>
