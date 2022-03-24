@@ -1,5 +1,7 @@
+from dataclasses import field
 from django import forms
-from .models import Lead
+from django.contrib.auth.forms import UserCreationForm, UsernameField
+from .models import Lead, User
 
 class LeadModelForm(forms.ModelForm):
     class Meta:
@@ -13,3 +15,8 @@ class LeadForm(forms.Form):
     famila = forms.CharField(max_length=15)
     yosh = forms.IntegerField(min_value=8)
 
+class NewUserForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ("username",)
+        field_classes = {'username': UsernameField}

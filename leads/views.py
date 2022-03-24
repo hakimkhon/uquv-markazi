@@ -9,18 +9,25 @@ from django.views.generic import TemplateView, ListView, DetailView, CreateView,
 class HomePage(TemplateView):
     template_name = ("home.html")
 
+class SignupView(CreateView):
+    template_name = ("registration/signup.html")
+    form_class = NewUserForm
+
+    def get_success_url(self):
+        return reverse('leads:lead_lists')
+
 class LeadListView(ListView):
-    template_name = ("lead\lead_lists.html")
+    template_name = ("lead/lead_lists.html")
     queryset = models.Lead.objects.all()
     context_object_name = "leads"
 
 class LeadDetailView(DetailView):
-    template_name = ("lead\lead_details.html")
+    template_name = ("lead/lead_details.html")
     queryset = models.Lead.objects.all()
     context_object_name = "lead"
 
 class LeadCreateView(CreateView):
-    template_name = ("lead\lead_create.html")
+    template_name = ("lead/lead_create.html")
     form_class = LeadModelForm
 
     def get_success_url(self):
