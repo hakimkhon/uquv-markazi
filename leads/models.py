@@ -1,13 +1,23 @@
+import profile
+from pyexpat import model
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
     pass
 
+class UserProfil(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return str(self.user.username)
+
 class Lead(models.Model):
     ism = models.CharField(max_length=15)
     famila = models.CharField(max_length=15)
     yosh = models.IntegerField(default=0)
+    qiziqishi = models.CharField(max_length=50)
+    # tulov = models.BooleanField(default=False)
     agent = models.ForeignKey("Agent", on_delete=models.CASCADE)
 
     def __str__(self):
@@ -15,5 +25,7 @@ class Lead(models.Model):
 
 class Agent(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    profil = models.ForeignKey(UserProfil, on_delete=models.CASCADE)
+
     def __str__(self):
         return str(self.user)
