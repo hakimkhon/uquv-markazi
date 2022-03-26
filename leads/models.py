@@ -16,8 +16,8 @@ class Lead(models.Model):
     ism = models.CharField(max_length=15)
     famila = models.CharField(max_length=15)
     yosh = models.IntegerField(default=0)
-    qiziqishi = models.CharField(max_length=50)
-    # tulov = models.BooleanField(default=False)
+    qiziqishi = models.CharField(max_length=100)
+    tulov = models.BooleanField(default=False)
     agent = models.ForeignKey("Agent", on_delete=models.CASCADE)
 
     def __str__(self):
