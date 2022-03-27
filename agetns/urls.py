@@ -1,6 +1,6 @@
 from urllib.parse import urlparse
 from django.urls import URLPattern, path
-from .views import AgentListView
+from .views import *
 
 name = "agents"
 
