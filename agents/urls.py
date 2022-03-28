@@ -4,5 +4,6 @@ from .views import *
 app_name = "agents"
 
 urlpatterns = [
-    path('', AgentHomePage.as_view(), name="agent_list")
+    path('', AgentListView.as_view(), name="agent_list"),
+    path('create/', AgentCreateView.as_view(), name="agent_create")
 ]
