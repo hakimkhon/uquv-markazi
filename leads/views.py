@@ -34,7 +34,7 @@ class LeadCreateView(LoginRequiredMixin, CreateView):
         return reverse('leads:lead_lists')
 
 class LeadUpdateView(LoginRequiredMixin, UpdateView):
-    template_name = ("lead\lead_update.html")
+    template_name = ("lead/lead_update.html")
     form_class = LeadModelForm
     queryset = models.Lead.objects.all()
 
@@ -42,7 +42,7 @@ class LeadUpdateView(LoginRequiredMixin, UpdateView):
         return reverse('leads:lead_lists')
 
 class LeadDeleteView(LoginRequiredMixin, DeleteView):
-    template_name = ("lead\lead_delete.html")
+    template_name = ("lead/lead_delete.html")
     form_class = LeadModelForm
     queryset = models.Lead.objects.all()
 
