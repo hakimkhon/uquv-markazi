@@ -19,8 +19,17 @@ class SignupView(CreateView):
 
 class LeadListView(LoginRequiredMixin, ListView):
     template_name = ("lead/lead_lists.html")
-    queryset = models.Lead.objects.all()
+    # queryset = models.Lead.objects.all()
     context_object_name = "leads"
+    
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_admin:
+            queryset = Lead.objects.filter(organisation = user.userprofil)
+        else: 
+            queryset = Lead.objects.filter(organisation = user.agent.organisation)
+            queryset = queryset.filter(agent__user = self.request.user)
+        return queryset
 
 class LeadDetailView(LoginRequiredMixin, DetailView):
     template_name = ("lead/lead_details.html")

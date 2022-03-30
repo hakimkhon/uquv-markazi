@@ -8,7 +8,7 @@ class LeadModelForm(forms.ModelForm):
     class Meta:
         model = Lead
         fields = (
-            "ism", "famila", "yosh", "agent", "qiziqishi"
+            "ism", "famila", "yosh", "qiziqishi", "agent", "organisation", #"tulov"
         )
 
 class LeadForm(forms.Form):
