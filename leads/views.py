@@ -1,6 +1,7 @@
 # from audioop import reverse
 from msilib.schema import ListView
 from django.shortcuts import redirect, render, reverse
+from agents.mixins import OrganiserAndLoginRequiredMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from . import models 
 from .forms import *
@@ -26,7 +27,7 @@ class LeadDetailView(LoginRequiredMixin, DetailView):
     queryset = models.Lead.objects.all()
     context_object_name = "lead"
 
-class LeadCreateView(LoginRequiredMixin, CreateView):
+class LeadCreateView(OrganiserAndLoginRequiredMixin, CreateView):
     template_name = ("lead/lead_create.html")
     form_class = LeadModelForm
 
@@ -41,7 +42,7 @@ class LeadUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('leads:lead_lists')
 
-class LeadDeleteView(LoginRequiredMixin, DeleteView):
+class LeadDeleteView(OrganiserAndLoginRequiredMixin, DeleteView):
     template_name = ("lead/lead_delete.html")
     form_class = LeadModelForm
     queryset = models.Lead.objects.all()

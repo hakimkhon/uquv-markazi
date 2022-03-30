@@ -7,7 +7,9 @@
         <div class="flex-col text-center w-1/1 mb-4">
             <h1 class="sm:text-3xl text-2xl font-medium title-font text-gray-900">Tech Date Soft o'quvchilari ro'yhati</h1>
             <button class="inline-blog items-center font-bold text-lg border-0 mr-2 py-1 px-3 focus:outline-none hover:bg-indigo-200 rounded text-base mt-2 md:mt-0">
+                {% if request.user.is_admin %}
                 <a href="{% url 'leads:lead_create' %}"> Yangi o'quvchi qo'shish </a>
+                {% endif %}
             </button>           
         </div>
         <div class="flex flex-wrap -m-4 justify-center">

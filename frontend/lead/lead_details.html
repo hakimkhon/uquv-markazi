@@ -13,9 +13,11 @@
                 <div class="flex mb-4">
                     <a href="" class="flex-grow text-indigo-500 border-b-2 border-indigo-500 py-2 text-lg px-1">
                         Ma'lumot</a>
+                    {% if request.user.is_admin %}
                     <a href="{% url 'leads:lead_update' lead.pk %}"
                         class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">
                         O'zgartirish</a>
+                    {% endif %}
                     <a class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">
                         Fanlar</a>
                 </div>

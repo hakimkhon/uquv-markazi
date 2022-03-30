@@ -1,17 +1,18 @@
 from leads.models import Agent
-from django.shortcuts import reverse
+from django.urls import reverse
+# from django.shortcuts import reverse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from .mixins import OrganiserAndLoginRequiredMixin
 from .forms import AgentModelForm
 
-class AgentListView(LoginRequiredMixin, ListView):
+class AgentListView(OrganiserAndLoginRequiredMixin, ListView):
     template_name = "agents/agents_list.html"
     
     def get_queryset(self):
         organisation = self.request.user.userprofil
         return Agent.objects.filter(organisation = organisation)
 
-class AgentCreateView(LoginRequiredMixin, CreateView):
+class AgentCreateView(OrganiserAndLoginRequiredMixin, CreateView):
     template_name = "agents/agents_create.html"
     form_class = AgentModelForm
 
@@ -24,7 +25,7 @@ class AgentCreateView(LoginRequiredMixin, CreateView):
         agent.save()
         return super(AgentCreateView, self).form_valid(form)
 
-class AgentDetailView(LoginRequiredMixin, DetailView):
+class AgentDetailView(OrganiserAndLoginRequiredMixin, DetailView):
     template_name = "agents/agents_detail.html"
     context_object_name = "agent"
 
@@ -32,7 +33,7 @@ class AgentDetailView(LoginRequiredMixin, DetailView):
         organisation = self.request.user.userprofil
         return Agent.objects.filter(organisation = organisation)
 
-class AgentUpdateView(LoginRequiredMixin, UpdateView):
+class AgentUpdateView(OrganiserAndLoginRequiredMixin, UpdateView):
     template_name = "agents/agents_update.html"
     form_class = AgentModelForm
 
@@ -43,7 +44,7 @@ class AgentUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse("agents:agent_list")
 
-class AgentDeleteView(LoginRequiredMixin, DeleteView):
+class AgentDeleteView(OrganiserAndLoginRequiredMixin, DeleteView):
     template_name = "agents/agents_delete.html"
     context_object_name = "agent"
 

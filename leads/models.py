@@ -5,8 +5,8 @@ from django.db.models.signals import post_save
 from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
-    is_admin = models.BooleanField(default=True)
-    is_ustoz = models.BooleanField(default=False)
+    is_admin = models.BooleanField(default=False)
+    is_ustoz = models.BooleanField(default=True)
 
 class UserProfil(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
