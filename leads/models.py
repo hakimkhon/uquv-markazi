@@ -5,8 +5,8 @@ from django.db.models.signals import post_save
 from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
-    is_admin = models.BooleanField(default=True)
-    is_ustoz = models.BooleanField(default=False)
+    is_admin = models.BooleanField(default=False)
+    is_ustoz = models.BooleanField(default=True)
 
 class UserProfil(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -20,7 +20,8 @@ class Lead(models.Model):
     yosh = models.IntegerField(default=0)
     qiziqishi = models.CharField(max_length=100)
     tulov = models.BooleanField(default=False)
-    agent = models.ForeignKey("Agent", on_delete=models.CASCADE)
+    organisation = models.ForeignKey(UserProfil, on_delete=models.CASCADE)
+    agent = models.ForeignKey("Agent", null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return str(self.ism)
