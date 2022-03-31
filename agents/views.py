@@ -2,8 +2,6 @@ import random
 from leads.models import Agent
 from django.urls import reverse
 from django.core.mail import send_mail
-from django.core.mail.backends.console import EmailBackend
-# from django.shortcuts import reverse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from .mixins import OrganiserAndLoginRequiredMixin
 from .forms import AgentModelForm
@@ -35,8 +33,8 @@ class AgentCreateView(OrganiserAndLoginRequiredMixin, CreateView):
         )
         send_mail(
             subject = "Bu Ustoz yaratilgan",
-            message = "Yangi Ustoz yaratilgan",
-            from_email = "root@ro.ot",
+            message = "Yangi Ustoz yaratildi",
+            from_email = "indo@TDS.uz",
             recipient_list = [user.email],
         )
         return super(AgentCreateView, self).form_valid(form)
