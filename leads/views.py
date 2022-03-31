@@ -7,8 +7,18 @@ from . import models
 from .forms import *
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 
-class HomePage(TemplateView):
+# class HomePage(TemplateView):
+#     template_name = ("home.html")
+
+class Galereya(ListView):
+    template_name = ("lead\galereya.html")
+    queryset = models.Lead.objects.all()
+    # context_object_name = "lead"
+
+class HomePage(ListView):
     template_name = ("home.html")
+    queryset = models.Lead.objects.all()
+    context_object_name = "all"
 
 class SignupView(CreateView):
     template_name = ("registration/signup.html")
